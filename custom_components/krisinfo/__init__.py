@@ -30,7 +30,8 @@ async def async_setup(hass, config):
     @callback
     async def refresh_data(service):
         hass.bus.fire(INTEGRATION_EVENTS, {"event_type": "manual_refresh_triggered"})
-        await hass.data[INTEGRATION_DOMAIN]["api"].update()
+        await hass.data[INTEGRATION_DOMAIN]["api"].updateNews()
+        await hass.data[INTEGRATION_DOMAIN]["api"].updateVmas()
 
     if not INTEGRATION_DOMAIN in hass.data:
         hass.data.setdefault(INTEGRATION_DOMAIN, {})

@@ -13,6 +13,7 @@ class KrisinformationAPI:
     def __init__(self, hass, longitude, latitude, county, radius, country):
         """Initialize the data object."""
 
+        self.communicator = kriscom()
         self.hass = hass
         self.logger = logging.getLogger(INTEGRATION_DOMAIN)
         self.slat = latitude
@@ -29,9 +30,11 @@ class KrisinformationAPI:
         self.attributes["display_state"] = "No new messages"
         self.attributes["display_icon"] = "mdi:check-circle-outline"
         self.attributes["attribution"] = INTEGRATION_ATTRIBUTION
+        self.attributes["json"] = ""
         self.data = {}
         self.available = True
-        self.update()
+        self.updateNews()
+        self.updateVmas()
         self.data["state"] = 0
 
     async def getDiag(self):
@@ -41,18 +44,37 @@ class KrisinformationAPI:
             "filtered": self.attributes["filtered_count"],
         }
 
-    async def update(self):
-        """Get the latest data from Krisinformation."""
+    async def updateVmas(self):
+        """Get the latest VMA data from Krisinformation."""
+        self.logger.debug("Updating VMA:s")
+
+        response = await self.communicator.requestVmas()
+        self.logger.debug(response)
+
+        self.data["state"] = 0
+        self.attributes["json"] = response
+
+        self.data["state"] = self.attributes["total_count"]
+        self.data["attributes"] = self.attributes
+        self.available = True
+
+        # if self.attributes["news_count"] > oldNews:
+        #     self.hass.bus.fire(INTEGRATION_EVENTS, {"event_type": "news_avaliable"})
+
+        # if self.attributes["alert_count"] > oldAlerts:
+        #     self.hass.bus.fire(INTEGRATION_EVENTS, {"event_type": "alerts_avaliable"})
+
+        self.hass.bus.fire(INTEGRATION_EVENTS, {"event_type": "vma_refresh_completed"})
+
+    async def updateNews(self):
+        """Get the latest news data from Krisinformation."""
         # try:
-        self.logger.debug("Trying to update")
-        communicator = kriscom()
-        response = await communicator.requestNews()
-        # self.logger.debug(response)
+        self.logger.debug("Updating news")
+
+        response = await self.communicator.requestNews()
 
         oldNews = self.attributes["news_count"]
         oldAlerts = self.attributes["alert_count"]
-
-        # self.logger.debug(self.attributes)
 
         self.data["state"] = 0
         self.attributes["messages"] = []
@@ -64,7 +86,6 @@ class KrisinformationAPI:
         self.attributes["display_icon"] = "mdi:check-circle-outline"
 
         for index, element in enumerate(response):
-            # self.logger.debug(element)
             self.attributes["filtered_count"] = +1
             self.make_object(index=index, element=element)
 
@@ -82,7 +103,6 @@ class KrisinformationAPI:
 
         self.data["state"] = self.attributes["total_count"]
         self.data["attributes"] = self.attributes
-        # self.logger.debug(self.data["attributes"])
         self.available = True
 
         if self.attributes["news_count"] > oldNews:

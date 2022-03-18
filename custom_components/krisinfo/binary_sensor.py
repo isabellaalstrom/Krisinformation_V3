@@ -73,7 +73,7 @@ class KrisInfoAlertSensor(KRISDevice):
     @Throttle(timedelta(minutes=5))
     async def async_update(self):
         """Get the latest data from the Krisinformation API."""
-        await self._api.update()
+        await self._api.updateNews()
 
     @property
     def device_class(self):
@@ -137,7 +137,7 @@ class KrisInfoNewsSensor(KRISDevice):
     @Throttle(timedelta(minutes=5))
     async def async_update(self):
         """Get the latest data from the Krisinformation API."""
-        await self._api.update()
+        await self._api.updateNews()
 
     @property
     def device_class(self):

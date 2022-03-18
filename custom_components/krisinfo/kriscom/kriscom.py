@@ -3,7 +3,7 @@ import httpx
 import logging
 
 from .exceptions import *
-from .const import VERSION, DOMAIN, USER_AGENT, KRISAPI_URL, BASE_URL, NEWS_PARAMETER
+from .const import VERSION, DOMAIN, USER_AGENT, BASE_URL, NEWS_PARAMETER, VMAS_PARAMETER
 
 logger = logging.getLogger(DOMAIN)
 
@@ -15,12 +15,12 @@ class kriscom(object):
     def version(self):
         return VERSION
 
-    async def request(self):
+    async def requestVmas(self):
 
         try:
             async with httpx.AsyncClient() as client:
                 response = await client.get(
-                    KRISAPI_URL,
+                    BASE_URL + VMAS_PARAMETER,
                     headers={"User-agent": USER_AGENT},
                     # allow_redirects=True,
                     timeout=self._timeout,
