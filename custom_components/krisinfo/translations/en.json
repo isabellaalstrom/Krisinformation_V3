@@ -2,7 +2,7 @@
     "config": {
         "step": {
             "user": {
-                "title": "Krisinformation",
+                "title": "Krisinfo",
                 "description": "Enter a friendly name for your Krisinformation integration to get started using it.",
                 "data": {
                     "name": "Integration friendly name",

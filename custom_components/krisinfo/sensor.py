@@ -56,7 +56,7 @@ class KrisinformationSensor(KRISDevice):
         return self._api.data["state"]
 
     @property
-    def device_state_attributes(self):
+    def extra_state_attributes(self):
         """Return the state attributes of the sensor."""
         self.logger.debug("ATTRIBUTES")
 
