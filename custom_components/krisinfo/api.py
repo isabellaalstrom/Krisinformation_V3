@@ -21,7 +21,7 @@ class KrisinformationAPI:
         self.radius = radius
         self.country = country
         self.attributes = {}
-        self.attributes["news"] = []
+        self.attributes["messages"] = []
         self.attributes["news_count"] = 0
         self.attributes["alert_count"] = 0
         self.attributes["total_count"] = 0
@@ -55,7 +55,7 @@ class KrisinformationAPI:
         # self.logger.debug(self.attributes)
 
         self.data["state"] = 0
-        self.attributes["news"] = []
+        self.attributes["messages"] = []
         self.attributes["news_count"] = 0
         self.attributes["alert_count"] = 0
         self.attributes["total_count"] = 0
@@ -82,6 +82,7 @@ class KrisinformationAPI:
 
         self.data["state"] = self.attributes["total_count"]
         self.data["attributes"] = self.attributes
+        # self.logger.debug(self.data["attributes"])
         self.available = True
 
         if self.attributes["news_count"] > oldNews:
@@ -132,8 +133,8 @@ class KrisinformationAPI:
                             is_in_county = True
 
                 distance = self.calculate_distance(coords=area["Coordinate"])
-                self.logger.debug("DISTANCE: " + str(distance))
-                self.logger.debug("RADIUS: " + str(self.radius))
+                # self.logger.debug("DISTANCE: " + str(distance))
+                # self.logger.debug("RADIUS: " + str(self.radius))
                 if float(distance) < float(self.radius):
                     within_range = True
 
@@ -155,7 +156,7 @@ class KrisinformationAPI:
                     newsObject["Links"].append(link["Url"])
             newsObject["SourceID"] = element["SourceID"]
 
-            self.attributes["news"].append(newsObject)
+            self.attributes["messages"].append(newsObject)
 
             if element["Event"] == "Alert":
                 self.attributes["alert_count"] += 1

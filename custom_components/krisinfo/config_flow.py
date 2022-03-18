@@ -1,6 +1,6 @@
-import voluptuous
 import logging
 import uuid
+import voluptuous
 
 from homeassistant import config_entries
 from homeassistant.exceptions import HomeAssistantError

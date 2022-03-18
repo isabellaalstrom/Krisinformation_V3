@@ -5,7 +5,12 @@
                 "title": "Krisinformation",
                 "description": "Enter a friendly name for your Krisinformation integration to get started using it.",
                 "data": {
-                    "name": "Integration friendly name"
+                    "name": "Integration friendly name",
+                    "latitude": "Latitude",
+                    "longitude": "Longitude",
+                    "radius": "Radius",
+                    "county": "County",
+                    "country": "Country"
                 }
             }
         }
@@ -21,7 +26,7 @@
                     "radius": "Radius",
                     "county": "County",
                     "country": "Country"
-				}
+                }
             }
         }
     }

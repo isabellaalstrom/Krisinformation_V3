@@ -15,7 +15,14 @@ def base_config_schema(config: dict = {}, config_flow: bool = False) -> dict:
     if not config:
         config = {CONF_NAME: ""}
     if config_flow:
-        return {vol.Required(CONF_NAME, default=config.get(CONF_NAME)): str}
+        return {
+            vol.Required(CONF_NAME, default=config.get(CONF_NAME)): str,
+            vol.Optional(CONF_RADIUS, default=50): cv.positive_int,
+            vol.Optional(CONF_COUNTY): cv.string,
+            vol.Optional(CONF_COUNTRY): cv.string,
+            vol.Optional(CONF_LATITUDE): cv.latitude,
+            vol.Optional(CONF_LONGITUDE): cv.longitude,
+        }
     return {vol.Optional(CONF_NAME, default=config.get(CONF_NAME)): str}
 
 
